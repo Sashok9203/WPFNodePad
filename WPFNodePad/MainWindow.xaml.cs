@@ -118,9 +118,29 @@ namespace WPFNodePad
             return words;
         }
 
-        private void Exit(object sender, RoutedEventArgs e)
+        private void Exit(object sender, RoutedEventArgs e) => Close();
+        
+        private void Copy(object sender, RoutedEventArgs e) => userText.Copy();
+
+        private void Paste(object sender, RoutedEventArgs e) => userText.Paste(); 
+
+        private void Cut(object sender, RoutedEventArgs e) => userText.Cut();
+
+        private void SelectAll(object sender, RoutedEventArgs e) => userText.SelectAll();
+
+        private void DeselectAll(object sender, RoutedEventArgs e) => userText.Selection.Select(userText.Document.ContentEnd, userText.Document.ContentEnd);
+
+        private void Undo(object sender, RoutedEventArgs e)
         {
-            Close();
+            if (userText.CanUndo) userText.Undo();
         }
+
+        private void Redo(object sender, RoutedEventArgs e)
+        {
+            if (userText.CanRedo) userText.Redo();
+        }
+
+        private void About(object sender, RoutedEventArgs e) => MessageBox.Show("Simple Text Editor", "About program");
+        
     }
 }
