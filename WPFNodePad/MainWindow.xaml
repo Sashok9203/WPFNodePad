@@ -28,30 +28,35 @@
 
     </Window.Resources>
     <DockPanel>
-        
         <Menu IsMainMenu="True" DockPanel.Dock="Top" Background="LightGray">
+            
             <MenuItem Header="_File" >
                 <MenuItem Style="{StaticResource menuButton}" Header="_New" Click="Operation" Tag="newFile" >
                     <MenuItem.Icon >
                         <Image Source="/icons/Newfile_page_document_empty_6315.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                
                 <MenuItem Style="{StaticResource menuButton}" Header="_Open" Click="Operation" Tag="openFile">
                     <MenuItem.Icon >
                         <Image Source="/icons/open-file256_25211.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                
                 <MenuItem Style="{StaticResource menuButton}" Header="_Save" Click="Operation" Tag="saveFile" IsEnabled="{Binding ElementName=save,Path=IsEnabled}">
                     <MenuItem.Icon >
                         <Image Source="/icons/save_file_disk_open_searsh_loading_clipboard_1513.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                
                 <MenuItem Style="{StaticResource menuButton}" Header="_Save As.."  Click="Operation" Tag="saveFileAs">
                     <MenuItem.Icon >
                         <Image Source="/icons/diskette_save_saveas_1514.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                
                 <Separator/>
+                
                 <MenuItem Header="_Exit"  Click="Operation" Tag="exit"/>
             </MenuItem>
             
