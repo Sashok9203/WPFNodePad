@@ -36,6 +36,7 @@ namespace WPFNodePad
             fontColor.ItemsSource  = typeof(Colors).GetProperties();
             fontColor.SelectedIndex = 7;
             copy.IsEnabled = false;
+            paste.IsEnabled = Clipboard.ContainsText();
         }
 
                
@@ -43,12 +44,13 @@ namespace WPFNodePad
         private void UserTextChanged(object sender, TextChangedEventArgs e)
         {
             saved = false;
+            save.IsEnabled = !saved;
             rowsCount.Content = userText.Text.Count(n => n == '\n');
             simbolsCount.Content = userText.Text.Count(n=>!Char.IsWhiteSpace(n));
             wordsCount.Content = getWordsСount();
             undo.IsEnabled = userText.CanUndo;
             redo.IsEnabled = userText.CanRedo;
-            paste.IsEnabled = Clipboard.ContainsText();
+            sAll.IsEnabled = userText.Text.Length > 0;
         }   
 
 
@@ -72,9 +74,9 @@ namespace WPFNodePad
                 case "exit": Close(); break;
                 case "undo": userText.Undo();  break;
                 case "redo": userText.Redo(); break;
-                case "copy": userText.Copy(); break;
+                case "copy": userText.Copy(); paste.IsEnabled = true; break;
                 case "paste": userText.Paste(); break;
-                case "cut": userText.Cut(); break;
+                case "cut": userText.Cut(); paste.IsEnabled = true; break;
                 case "selectAll": userText.SelectAll(); break;
                 case "deSelectAll": userText.Select(userText.Text.Length, 0); break;
                 case "about": MessageBox.Show("Simple Text Editor", "About program"); break;
@@ -101,6 +103,7 @@ namespace WPFNodePad
             }
             File.AppendAllText(tmpPath, userText.Text); ;
             saved = true;
+            save.IsEnabled = !saved;
         }
 
         private void LoadDocument()
@@ -116,6 +119,7 @@ namespace WPFNodePad
 
             userText.Text = File.ReadAllText(curentPath);
             saved = true;
+            save.IsEnabled = !saved;
         }
 
         private int getWordsСount()
@@ -152,10 +156,7 @@ namespace WPFNodePad
             }
         }
 
-        private void SelectionChanged(object sender, RoutedEventArgs e)
-        {
-            copy.IsEnabled  = userText.SelectedText.Length != 0;
-                
-        }
+        private void SelectionChanged(object sender, RoutedEventArgs e) => copy.IsEnabled = userText.SelectedText.Length != 0;
+        
     }
 }

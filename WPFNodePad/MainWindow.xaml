@@ -13,21 +13,96 @@
             <Setter Property="Width" Value="25"/>
             <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value=".5"/>
+                <Setter Property="Opacity" Value=".25"/>
             </Trigger>
             </Style.Triggers>
         </Style>
-        
+
         <Style TargetType="MenuItem" x:Key="menuButton">
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" Value=".5"/>
+                    <Setter Property="Opacity" Value=".25"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
+        <Image x:Key="undoImage" Source="/icons/undoarrow_undo_1534.png"/>
+        <Image x:Key="redoImage" Source="/icons/redoarrow_rehace_1547.png"/>
+        <Image x:Key="copyImage" Source="/icons/copy_paste_document_file_1557.png"/>
+        <Image x:Key="pasteImage" Source="/icons/texteditor_pencil_detext_836.png"/>
+        <Image x:Key="cutImage" Source="/icons/Scissors512_44207.png"/>
+        <Image x:Key="sAllImage" Source="/icons/ic_done_all_128_28243.png"/>
+        <Image x:Key="dSAllImage" Source="/icons/collapse_all_icon_136745.png"/>
+
+        <Style TargetType="MenuItem" x:Key="undoMenuItem" BasedOn="{StaticResource menuButton}">
+            <Setter Property="Icon" Value="{StaticResource undoImage}"/>
+            <Setter Property="Header" Value="_Undo"/>
+            <Setter Property="Tag" Value="undo"/>
+            <Setter Property="IsEnabled" Value="{Binding ElementName=undo,Path=IsEnabled}"/>
+        </Style>
+
+        <Style TargetType="MenuItem" x:Key="redoMenuItem" BasedOn="{StaticResource menuButton}">
+            <Setter Property="Icon" Value="{StaticResource redoImage}"/>
+            <Setter Property="Header" Value="_Redo"/>
+            <Setter Property="Tag" Value="redo"/>
+            <Setter Property="IsEnabled" Value="{Binding ElementName=redo,Path=IsEnabled}"/>
+        </Style>
+
+        <Style TargetType="MenuItem" x:Key="copyMenuItem" BasedOn="{StaticResource menuButton}">
+            <Setter Property="Icon" Value="{StaticResource copyImage}"/>
+            <Setter Property="Header" Value="_Copy"/>
+            <Setter Property="Tag" Value="copy"/>
+            <Setter Property="IsEnabled" Value="{Binding ElementName=copy,Path=IsEnabled}"/>
+        </Style>
+
+        <Style TargetType="MenuItem" x:Key="pasteMenuItem" BasedOn="{StaticResource menuButton}">
+            <Setter Property="Icon" Value="{StaticResource pasteImage}"/>
+            <Setter Property="Header" Value="_Paste"/>
+            <Setter Property="Tag" Value="paste"/>
+            <Setter Property="IsEnabled" Value="{Binding ElementName=paste,Path=IsEnabled}"/>
+        </Style>
+
+        <Style TargetType="MenuItem" x:Key="cutMenuItem" BasedOn="{StaticResource menuButton}">
+            <Setter Property="Icon" Value="{StaticResource cutImage}"/>
+            <Setter Property="Header" Value="_Cut"/>
+            <Setter Property="Tag" Value="cut"/>
+            <Setter Property="IsEnabled" Value="{Binding ElementName=copy,Path=IsEnabled}"/>
+        </Style>
+
+        <Style TargetType="MenuItem" x:Key="sAllMenuItem" BasedOn="{StaticResource menuButton}">
+            <Setter Property="Icon" Value="{StaticResource sAllImage}"/>
+            <Setter Property="Header" Value="_SelectAll"/>
+            <Setter Property="Tag" Value="selectAll"/>
+        </Style>
+
+        <Style TargetType="MenuItem" x:Key="dSAllMenuItem" BasedOn="{StaticResource menuButton}">
+            <Setter Property="Icon" Value="{StaticResource dSAllImage}"/>
+            <Setter Property="Header" Value="_DeselectAll"/>
+            <Setter Property="Tag" Value="deSelectAll" />
+            <Setter Property="IsEnabled" Value="{Binding ElementName=copy,Path=IsEnabled}"/>
+        </Style>
+
+
+
+
+
+        <ContextMenu x:Key="contMenu">
+            <MenuItem  Style="{StaticResource undoMenuItem}" Click="Operation"/>
+            <MenuItem  Style="{StaticResource redoMenuItem}" Click="Operation"/>
+            <Separator/>
+            <MenuItem  Style="{StaticResource copyMenuItem}" Click="Operation"/>
+            <MenuItem  Style="{StaticResource pasteMenuItem}" Click="Operation"/>
+            <MenuItem  Style="{StaticResource cutMenuItem}" Click="Operation"/>
+            <Separator/>
+            <MenuItem  Style="{StaticResource sAllMenuItem}" Click="Operation" IsEnabled="{Binding ElementName= sAll,Path=isEnabled}" />
+            <MenuItem  Style="{StaticResource dSAllMenuItem}" Click="Operation"/>
+        </ContextMenu> 
+        
+        
 
     </Window.Resources>
     <DockPanel>
+
         <Menu IsMainMenu="True" DockPanel.Dock="Top" Background="LightGray">
             
             <MenuItem Header="_File" >
@@ -60,56 +135,19 @@
                 <MenuItem Header="_Exit"  Click="Operation" Tag="exit"/>
             </MenuItem>
             
-            <MenuItem Header="_Edit">
-                <MenuItem  Style="{StaticResource menuButton}" Header="_Undo" Click="Operation" Tag="undo" IsEnabled="{Binding ElementName=undo,Path=IsEnabled}">
-                    <MenuItem.Icon >
-                        <Image Source="/icons/undoarrow_undo_1534.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-
-                <MenuItem Style="{StaticResource menuButton}" Header="_Redo" Click="Operation" Tag="redo" IsEnabled="{Binding ElementName=redo,Path=IsEnabled}">
-                    <MenuItem.Icon >
-                        <Image Source="/icons/redoarrow_rehace_1547.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                
+            <MenuItem Header="_Edit" >
+                <MenuItem  Style="{StaticResource undoMenuItem}" Click="Operation"/>
+                <MenuItem  Style="{StaticResource redoMenuItem}" Click="Operation"/>
                 <Separator/>
-
-                <MenuItem  Style="{StaticResource menuButton}" Header="_Copy" Click="Operation" Tag="copy" IsEnabled="{Binding ElementName=copy,Path=IsEnabled}" >
-                    <MenuItem.Icon >
-                        <Image Source="/icons/copy_paste_document_file_1557.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-
-                <MenuItem Style="{StaticResource menuButton}" Header="_Paste"  Click="Operation" Tag="paste" IsEnabled="{Binding ElementName=paste,Path=IsEnabled}">
-                    <MenuItem.Icon >
-                        <Image Source="/icons/texteditor_pencil_detext_836.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-
-                <MenuItem Style="{StaticResource menuButton}" Header="_Cut"  Click="Operation" Tag="cut"  IsEnabled="{Binding ElementName=copy,Path=IsEnabled}">
-                    <MenuItem.Icon >
-                        <Image Source="/icons/Scissors512_44207.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                
+                <MenuItem  Style="{StaticResource copyMenuItem}"  Click="Operation"/>
+                <MenuItem  Style="{StaticResource pasteMenuItem}" Click="Operation"/>
+                <MenuItem  Style="{StaticResource cutMenuItem}"   Click="Operation"/>
                 <Separator/>
-
-                <MenuItem Style="{StaticResource menuButton}" Name="sAll" Header="_Select All" Click="Operation" Tag="selectAll" IsEnabled="False">
-                    <MenuItem.Icon >
-                        <Image Source="/icons/ic_done_all_128_28243.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-
-                <MenuItem Style="{StaticResource menuButton}" Header="_Deselect All" Click="Operation" Tag="deSelectAll" IsEnabled="{Binding ElementName=copy,Path=IsEnabled}">
-                    <MenuItem.Icon >
-                        <Image Source="/icons/collapse_all_icon_136745.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                
+                <MenuItem  Style="{StaticResource sAllMenuItem}"  Click="Operation"  Name="sAll" IsEnabled="False"/>
+                <MenuItem  Style="{StaticResource dSAllMenuItem}" Click="Operation"/>
             </MenuItem>
             
-            <MenuItem Header="_About" Click="Operation" Tag="about"/>
+            <MenuItem Header="_About.." Click="Operation" Tag="about"/>
         </Menu>
 
         <ToolBarTray DockPanel.Dock="Top">
@@ -124,7 +162,7 @@
                     <Image Source="\icons\open-file256_25211.png"/>
                 </Button>
 
-                <Button Name="save" Style="{StaticResource toolButton}" Click="Operation" Tag="saveFile" ToolTip="Save File" IsEnabled="False">
+                <Button Name="save" Style="{StaticResource toolButton}" Click="Operation" Tag="saveFile" ToolTip="Save File" >
                     <Image Source="\icons\save_file_disk_open_searsh_loading_clipboard_1513.png"/>
                 </Button>
 
@@ -209,11 +247,10 @@
             </StackPanel>
         </StatusBar>
 
-        <TextBox  TextWrapping="Wrap"  AcceptsReturn="True" VerticalScrollBarVisibility="Visible" FontSize="{Binding  ElementName = fontSize, Path=SelectedItem}" Foreground ="{Binding ElementName = fontColor,Path = SelectedItem.Name}" Name="userText" Margin="5" TextChanged="UserTextChanged" SelectionChanged="SelectionChanged">
-            <TextBox.ContextMenu>
+        <TextBox  ContextMenu="{StaticResource contMenu}" TextWrapping="Wrap"  AcceptsReturn="True" VerticalScrollBarVisibility="Auto" FontSize="{Binding  ElementName = fontSize, Path=SelectedItem}" Foreground ="{Binding ElementName = fontColor,Path = SelectedItem.Name}" Name="userText" Margin="5" TextChanged="UserTextChanged" SelectionChanged="SelectionChanged">
+            <!--<TextBox.ContextMenu>
                 <ContextMenu>
-
-                    <MenuItem Style="{StaticResource menuButton}" Click="Operation" Tag="undo" Header="Undo" IsEnabled="{Binding ElementName=undo,Path=IsEnabled}">
+                    <MenuItem  Style="{StaticResource menuButton}" Click="Operation" Tag="undo" Header="Undo" IsEnabled="{Binding ElementName= x:undo,Path=IsEnabled}">
                         <MenuItem.Icon >
                             <Image Source="/icons/undoarrow_undo_1534.png"/>
                         </MenuItem.Icon>
@@ -260,7 +297,7 @@
                     </MenuItem>
                    
                 </ContextMenu>
-            </TextBox.ContextMenu>
+            </TextBox.ContextMenu>-->
         </TextBox>
     </DockPanel>
 </Window>
