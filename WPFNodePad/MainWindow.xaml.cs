@@ -1,18 +1,22 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+
+
 
 
 namespace WPFNodePad
@@ -24,39 +28,60 @@ namespace WPFNodePad
     {
         bool saved = true;
         string? curentPath = null;
-        TextRange tr;
         public MainWindow()
         {
             InitializeComponent();
-            tr = new(userText.Document.ContentStart, userText.Document.ContentEnd);
+            for (double i = 6; i < 78; i += 2)
+                fontSize.Items.Add(i);
+            fontColor.ItemsSource  = typeof(Colors).GetProperties();
+            fontColor.SelectedIndex = 7;
+            copy.IsEnabled = false;
         }
 
-        private void NewFile(object sender, RoutedEventArgs e)
-        {
-            if (!saved && MessageBox.Show("Do you wont save current text?", "Save", MessageBoxButton.YesNo) == MessageBoxResult.Yes) SaveDocument();
-                 
-            curentPath = null;
-            tr.Text = string.Empty;
-            saved = true;
-        }
-
-        
+               
 
         private void UserTextChanged(object sender, TextChangedEventArgs e)
         {
             saved = false;
-            rowsCount.Content = tr.Text.Count(n => n == '\n');
-            simbolsCount.Content = tr.Text.Count(n=>!Char.IsWhiteSpace(n));
+            rowsCount.Content = userText.Text.Count(n => n == '\n');
+            simbolsCount.Content = userText.Text.Count(n=>!Char.IsWhiteSpace(n));
             wordsCount.Content = getWordsСount();
+            undo.IsEnabled = userText.CanUndo;
+            redo.IsEnabled = userText.CanRedo;
+            paste.IsEnabled = Clipboard.ContainsText();
+        }   
+
+
+        private void Operation(object sender, RoutedEventArgs e)
+        {
+            string? command ;
+            if (sender is Button) command = (sender as Button)?.Tag.ToString();
+            else command = (sender as MenuItem)?.Tag.ToString();
+            switch (command)
+            {
+                case "newFile":
+                    if (!saved && MessageBox.Show("Do you wont save current text?", "Save", MessageBoxButton.YesNo) == MessageBoxResult.Yes) SaveDocument();
+
+                    curentPath = null;
+                    userText.Text = string.Empty;
+                    saved = true;
+                    break;
+                case "openFile": LoadDocument(); break;
+                case "saveFile": SaveDocument(); break;
+                case "saveFileAs": SaveDocument(true); break;
+                case "exit": Close(); break;
+                case "undo": userText.Undo();  break;
+                case "redo": userText.Redo(); break;
+                case "copy": userText.Copy(); break;
+                case "paste": userText.Paste(); break;
+                case "cut": userText.Cut(); break;
+                case "selectAll": userText.SelectAll(); break;
+                case "deSelectAll": userText.Select(userText.Text.Length, 0); break;
+                case "about": MessageBox.Show("Simple Text Editor", "About program"); break;
+
+            }
         }
-
-        private void OpenFile(object sender, RoutedEventArgs e) => LoadDocument();
-        
-        private void SaveFile(object sender, RoutedEventArgs e) => SaveDocument();
-       
-        private void SaveFileAs(object sender, RoutedEventArgs e) => SaveDocument(true);
-
-
+ 
         private void SaveDocument(bool newPath = false)
         {
             string tmpPath = curentPath;
@@ -64,7 +89,7 @@ namespace WPFNodePad
             {
                 SaveFileDialog sfd = new()
                 {
-                    Filter = "Text Files (*.txt)|*.txt|RichText Files (*.rtf)|*.rtf"
+                    Filter = "Text Files (*.txt)|*.txt"
                 };
 
                 if (sfd.ShowDialog() == true)
@@ -74,12 +99,7 @@ namespace WPFNodePad
                 }
                 else return;
             }
-     
-            using (FileStream fs = new(tmpPath, FileMode.OpenOrCreate))
-            {
-                if (Path.GetExtension(tmpPath).ToLower() == ".rtf") tr.Save(fs, DataFormats.Rtf);
-                else if (Path.GetExtension(tmpPath).ToLower() == ".txt") tr.Save(fs, DataFormats.Text);
-            }
+            File.AppendAllText(tmpPath, userText.Text); ;
             saved = true;
         }
 
@@ -88,17 +108,13 @@ namespace WPFNodePad
             if (!saved && MessageBox.Show("Do you wont save current text?", "Save", MessageBoxButton.YesNo) == MessageBoxResult.Yes) SaveDocument();
             OpenFileDialog sfd = new()
             {
-                Filter = "Text Files (*.txt)|*.txt|RichText Files (*.rtf)|*.rtf"
+                Filter = "Text Files (*.txt)|*.txt"
             };
 
             if (sfd.ShowDialog() == true) curentPath = sfd.FileName;
             else return;
-          
-            using (FileStream fs = new(curentPath, FileMode.OpenOrCreate))
-            {
-                if (Path.GetExtension(curentPath).ToLower() == ".rtf") tr.Load(fs, DataFormats.Rtf);
-                else if (Path.GetExtension(curentPath).ToLower() == ".txt") tr.Load(fs, DataFormats.Text);
-            }
+
+            userText.Text = File.ReadAllText(curentPath);
             saved = true;
         }
 
@@ -106,7 +122,7 @@ namespace WPFNodePad
         {
             int words = 0;
             bool end = true;
-            foreach (var ch in tr.Text)
+            foreach (var ch in userText.Text)
             {
                 if (!Char.IsPunctuation(ch) && !Char.IsWhiteSpace(ch))
                 {
@@ -118,29 +134,28 @@ namespace WPFNodePad
             return words;
         }
 
-        private void Exit(object sender, RoutedEventArgs e) => Close();
-        
-        private void Copy(object sender, RoutedEventArgs e) => userText.Copy();
-
-        private void Paste(object sender, RoutedEventArgs e) => userText.Paste(); 
-
-        private void Cut(object sender, RoutedEventArgs e) => userText.Cut();
-
-        private void SelectAll(object sender, RoutedEventArgs e) => userText.SelectAll();
-
-        private void DeselectAll(object sender, RoutedEventArgs e) => userText.Selection.Select(userText.Document.ContentEnd, userText.Document.ContentEnd);
-
-        private void Undo(object sender, RoutedEventArgs e)
+       
+        private void FontToggleButtons(object sender, RoutedEventArgs e)
         {
-            if (userText.CanUndo) userText.Undo();
+            ToggleButton? button = sender as ToggleButton;
+            switch (button?.Name)
+            {
+                case "italicFont":
+                    userText.FontStyle = button.IsChecked == true? FontStyles.Italic : FontStyles.Normal;
+                    break;
+                case "boldFont":
+                    userText.FontWeight = button.IsChecked == true ? FontWeights.Bold : FontWeights.Normal;
+                    break;
+                case "underlineFont":
+                  userText.TextDecorations = button.IsChecked == true ? TextDecorations.Underline : null;
+                    break;
+            }
         }
 
-        private void Redo(object sender, RoutedEventArgs e)
+        private void SelectionChanged(object sender, RoutedEventArgs e)
         {
-            if (userText.CanRedo) userText.Redo();
+            copy.IsEnabled  = userText.SelectedText.Length != 0;
+                
         }
-
-        private void About(object sender, RoutedEventArgs e) => MessageBox.Show("Simple Text Editor", "About program");
-        
     }
 }

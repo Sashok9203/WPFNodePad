@@ -8,16 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="icons\bold-text_icon-icons.com_71249.png" />
     <None Remove="icons\collapse_all_icon_136745.png" />
     <None Remove="icons\copy_paste_document_file_1557.png" />
     <None Remove="icons\diskette_save_saveas_1514.png" />
     <None Remove="icons\ic_done_all_128_28243.png" />
+    <None Remove="icons\italic_icon-icons.com_70938.png" />
     <None Remove="icons\Newfile_page_document_empty_6315.png" />
     <None Remove="icons\open-file256_25211.png" />
     <None Remove="icons\redoarrow_rehace_1547.png" />
     <None Remove="icons\save_file_disk_open_searsh_loading_clipboard_1513.png" />
     <None Remove="icons\Scissors512_44207.png" />
     <None Remove="icons\texteditor_pencil_detext_836.png" />
+    <None Remove="icons\underline-text-button_icon-icons.com_72498.png" />
     <None Remove="icons\undoarrow_undo_1534.png" />
     <None Remove="Newfile_page_document_empty_6315.png" />
     <None Remove="open-file256_25211.png" />
@@ -25,16 +28,28 @@
   </ItemGroup>
 
   <ItemGroup>
+    <COMReference Include="{215d64d2-031c-33c7-96e3-61794cd1ee61}">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>4</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <Guid>215d64d2-031c-33c7-96e3-61794cd1ee61</Guid>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icons\bold-text_icon-icons.com_71249.png" />
     <Resource Include="icons\collapse_all_icon_136745.png" />
     <Resource Include="icons\copy_paste_document_file_1557.png" />
     <Resource Include="icons\diskette_save_saveas_1514.png" />
     <Resource Include="icons\ic_done_all_128_28243.png" />
+    <Resource Include="icons\italic_icon-icons.com_70938.png" />
     <Resource Include="icons\Newfile_page_document_empty_6315.png" />
     <Resource Include="icons\open-file256_25211.png" />
     <Resource Include="icons\redoarrow_rehace_1547.png" />
     <Resource Include="icons\save_file_disk_open_searsh_loading_clipboard_1513.png" />
     <Resource Include="icons\Scissors512_44207.png" />
     <Resource Include="icons\texteditor_pencil_detext_836.png" />
+    <Resource Include="icons\underline-text-button_icon-icons.com_72498.png" />
     <Resource Include="icons\undoarrow_undo_1534.png" />
   </ItemGroup>
 

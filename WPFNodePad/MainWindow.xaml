@@ -3,122 +3,194 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:WPFNodePad"
         mc:Ignorable="d"
         Title="WPF NodePad" Height="450" Width="800">
+    <Window.Resources>
+        
+        <Style TargetType="Button" x:Key="toolButton">
+            <Setter Property="Width" Value="25"/>
+            <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value=".5"/>
+            </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style TargetType="MenuItem" x:Key="menuButton">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value=".5"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
     <DockPanel>
         
         <Menu IsMainMenu="True" DockPanel.Dock="Top" Background="LightGray">
             <MenuItem Header="_File" >
-                <MenuItem Header="_New" Click="NewFile" >
+                <MenuItem Style="{StaticResource menuButton}" Header="_New" Click="Operation" Tag="newFile" >
                     <MenuItem.Icon >
                         <Image Source="/icons/Newfile_page_document_empty_6315.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Open" Click="OpenFile" >
+                <MenuItem Style="{StaticResource menuButton}" Header="_Open" Click="Operation" Tag="openFile">
                     <MenuItem.Icon >
                         <Image Source="/icons/open-file256_25211.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Save" Click="SaveFile" >
+                <MenuItem Style="{StaticResource menuButton}" Header="_Save" Click="Operation" Tag="saveFile" IsEnabled="{Binding ElementName=save,Path=IsEnabled}">
                     <MenuItem.Icon >
                         <Image Source="/icons/save_file_disk_open_searsh_loading_clipboard_1513.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Save As.." Click="SaveFileAs" >
+                <MenuItem Style="{StaticResource menuButton}" Header="_Save As.."  Click="Operation" Tag="saveFileAs">
                     <MenuItem.Icon >
                         <Image Source="/icons/diskette_save_saveas_1514.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="_Exit" Click="Exit"/>
-
+                <MenuItem Header="_Exit"  Click="Operation" Tag="exit"/>
             </MenuItem>
+            
             <MenuItem Header="_Edit">
-                <MenuItem Header="Undo" Click="Undo">
+                <MenuItem  Style="{StaticResource menuButton}" Header="_Undo" Click="Operation" Tag="undo" IsEnabled="{Binding ElementName=undo,Path=IsEnabled}">
                     <MenuItem.Icon >
                         <Image Source="/icons/undoarrow_undo_1534.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Redo" Click="Redo">
+
+                <MenuItem Style="{StaticResource menuButton}" Header="_Redo" Click="Operation" Tag="redo" IsEnabled="{Binding ElementName=redo,Path=IsEnabled}">
                     <MenuItem.Icon >
                         <Image Source="/icons/redoarrow_rehace_1547.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                
                 <Separator/>
-                <MenuItem Header="Copy" Click="Copy" >
+
+                <MenuItem  Style="{StaticResource menuButton}" Header="_Copy" Click="Operation" Tag="copy" IsEnabled="{Binding ElementName=copy,Path=IsEnabled}" >
                     <MenuItem.Icon >
                         <Image Source="/icons/copy_paste_document_file_1557.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Paste" Click="Paste" >
+
+                <MenuItem Style="{StaticResource menuButton}" Header="_Paste"  Click="Operation" Tag="paste" IsEnabled="{Binding ElementName=paste,Path=IsEnabled}">
                     <MenuItem.Icon >
                         <Image Source="/icons/texteditor_pencil_detext_836.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Cut"  Click="Cut">
+
+                <MenuItem Style="{StaticResource menuButton}" Header="_Cut"  Click="Operation" Tag="cut"  IsEnabled="{Binding ElementName=copy,Path=IsEnabled}">
                     <MenuItem.Icon >
                         <Image Source="/icons/Scissors512_44207.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                
                 <Separator/>
-                <MenuItem Header="Select All" Click="SelectAll" >
+
+                <MenuItem Style="{StaticResource menuButton}" Name="sAll" Header="_Select All" Click="Operation" Tag="selectAll" IsEnabled="False">
                     <MenuItem.Icon >
                         <Image Source="/icons/ic_done_all_128_28243.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Deselect All" Click="DeselectAll" >
+
+                <MenuItem Style="{StaticResource menuButton}" Header="_Deselect All" Click="Operation" Tag="deSelectAll" IsEnabled="{Binding ElementName=copy,Path=IsEnabled}">
                     <MenuItem.Icon >
                         <Image Source="/icons/collapse_all_icon_136745.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                
             </MenuItem>
-            <MenuItem Header="_About" Click="About"/>
+            
+            <MenuItem Header="_About" Click="Operation" Tag="about"/>
         </Menu>
 
         <ToolBarTray DockPanel.Dock="Top">
             
             <ToolBar Band="1" BandIndex="1" Height="30">
-                              
-                <Button  Width="25" Click="NewFile">
+
+                <Button  Style="{StaticResource toolButton}" Click="Operation" ToolTip="New File" Tag="newFile">
                     <Image Source="\icons\Newfile_page_document_empty_6315.png"/>
                 </Button>
-            
-                <Button  Width="25" Click="OpenFile">
+
+                <Button Style="{StaticResource toolButton}" Click="Operation" Tag="openFile" ToolTip="Open File">
                     <Image Source="\icons\open-file256_25211.png"/>
                 </Button>
-            
-                <Button Width="25" Click="SaveFile">
+
+                <Button Name="save" Style="{StaticResource toolButton}" Click="Operation" Tag="saveFile" ToolTip="Save File" IsEnabled="False">
                     <Image Source="\icons\save_file_disk_open_searsh_loading_clipboard_1513.png"/>
                 </Button>
-            
-                <Button Width="25" Click="SaveFileAs">
+
+                <Button Style="{StaticResource toolButton}" Click="Operation" Tag="saveFileAs" ToolTip="Save File As">
                     <Image Source="/icons/diskette_save_saveas_1514.png"/>
                 </Button>
 
             </ToolBar>
             
             <ToolBar Band="1" BandIndex="1">
-                <Button Width="25" Click="Undo">
-                    <Image Source="/icons/undoarrow_undo_1534.png"/>
+
+                <Button Name="undo" Style="{StaticResource toolButton}" Click="Operation" Tag="undo" ToolTip="Undo" IsEnabled="False">
+                    <Image Source="/icons/undoarrow_undo_1534.png" />
                 </Button>
-                <Button Width="25" Click="Redo">
+
+                <Button Name="redo" Style="{StaticResource toolButton}" Click="Operation" Tag="redo" ToolTip="Redo" IsEnabled="False">
                     <Image Source="/icons/redoarrow_rehace_1547.png"/>
                 </Button>
+                
             </ToolBar>
         
             <ToolBar Band="1" BandIndex="1">
-                <Button Width="25" Click="Copy">
+                <Button Name="copy" Style="{StaticResource toolButton}" Click="Operation" Tag="copy" ToolTip="Copy" IsEnabled="False">
                     <Image Source="/icons/copy_paste_document_file_1557.png"/>
                 </Button>
-                <Button Width="25" Click="Cut">
+
+                <Button Style="{StaticResource toolButton}" Click="Operation" Tag="cut" ToolTip="Cut" IsEnabled="{Binding ElementName=copy,Path=IsEnabled}">
                     <Image Source="/icons/Scissors512_44207.png"/>
                 </Button>
-                <Button Width="25" Click="Paste">
+
+                <Button Name="paste" Style="{StaticResource toolButton}" Click="Operation" Tag="paste" ToolTip="Past">
                     <Image Source="/icons/texteditor_pencil_detext_836.png"/>
                 </Button>
             </ToolBar>
 
+            <ToolBar Band="1" BandIndex="1">
+                <ToggleButton  Name="italicFont" Width="20" Click="FontToggleButtons" >
+                    <Image Source="/icons/italic_icon-icons.com_70938.png" />
+                </ToggleButton>
+                
+                <ToggleButton Name="boldFont" Width="20" Click="FontToggleButtons" >
+                    <Image Source="/icons/bold-text_icon-icons.com_71249.png" />
+                </ToggleButton>
+                
+                <ToggleButton  Name="underlineFont" Width="20" Click="FontToggleButtons">
+                    <Image Source="/icons/underline-text-button_icon-icons.com_72498.png" />
+                </ToggleButton>
+                
+                <Separator/>
+                
+                <StackPanel Orientation="Horizontal" ToolTip="Font Size">
+                    <Label  Content ="Font Size" FontSize="14" />
+                    <ComboBox Name ="fontSize" IsReadOnly="True" Height="25" VerticalContentAlignment="Center" SelectedIndex="3" />
+                </StackPanel>
+                
+                <Separator/>
+                
+                <StackPanel Orientation="Horizontal" ToolTip="Font Color">
+                    <Label  Content ="Font Color" FontSize="14" />
+                    <ComboBox Name ="fontColor" IsReadOnly="True" Height="25" VerticalContentAlignment="Center" SelectedIndex="3">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Fill="{Binding Name}" Width="16" Height="16" Margin="0,2,5,2" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </ToolBar>
         </ToolBarTray>
         
         <StatusBar DockPanel.Dock="Bottom" Height="30" Background="LightGray">
@@ -132,54 +204,58 @@
             </StackPanel>
         </StatusBar>
 
-        <RichTextBox Name="userText" Margin="5" TextChanged="UserTextChanged">
-            <RichTextBox.Resources>
-                <Style TargetType="{x:Type Paragraph}">
-                    <Setter Property="Margin" Value="0"/>
-                </Style>
-            </RichTextBox.Resources>
-            <RichTextBox.ContextMenu>
+        <TextBox  TextWrapping="Wrap"  AcceptsReturn="True" VerticalScrollBarVisibility="Visible" FontSize="{Binding  ElementName = fontSize, Path=SelectedItem}" Foreground ="{Binding ElementName = fontColor,Path = SelectedItem.Name}" Name="userText" Margin="5" TextChanged="UserTextChanged" SelectionChanged="SelectionChanged">
+            <TextBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Undo">
+
+                    <MenuItem Style="{StaticResource menuButton}" Click="Operation" Tag="undo" Header="Undo" IsEnabled="{Binding ElementName=undo,Path=IsEnabled}">
                         <MenuItem.Icon >
                             <Image Source="/icons/undoarrow_undo_1534.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Redo">
+
+                    <MenuItem  Style="{StaticResource menuButton}" Header="Redo" Click="Operation" Tag="redo" IsEnabled="{Binding ElementName=redo,Path=IsEnabled}">
                         <MenuItem.Icon >
                             <Image Source="/icons/redoarrow_rehace_1547.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
+                    
                     <Separator/>
-                    <MenuItem Header="Copy" Click="Copy">
+
+                    <MenuItem Style="{StaticResource menuButton}" Header="Copy" Click="Operation" Tag="copy" IsEnabled="{Binding ElementName=copy,Path=IsEnabled}">
                         <MenuItem.Icon >
                             <Image Source="/icons/copy_paste_document_file_1557.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Paste" Click="Paste" >
+
+                    <MenuItem  Style="{StaticResource menuButton}" Header="Paste" Click="Operation" Tag="paste" IsEnabled="{Binding ElementName=paste,Path=IsEnabled}">
                         <MenuItem.Icon >
                             <Image Source="/icons/texteditor_pencil_detext_836.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Cut" Click="Cut">
+
+                    <MenuItem  Style="{StaticResource menuButton}" Header="Cut" Click="Operation" Tag="cut" IsEnabled="{Binding ElementName=copy,Path=IsEnabled}">
                         <MenuItem.Icon >
                             <Image Source="/icons/Scissors512_44207.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
+                    
                     <Separator/>
-                    <MenuItem Header="Select All" Click="SelectAll" >
+
+                    <MenuItem Style="{StaticResource menuButton}" Header="Select All" Click="Operation" Tag="selectAll" IsEnabled="{Binding ElementName=sAll,Path=IsEnabled}">
                         <MenuItem.Icon >
                             <Image Source="/icons/ic_done_all_128_28243.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Deselect All"  Click="DeselectAll"  >
+
+                    <MenuItem Style="{StaticResource menuButton}" Header="Deselect All"  Click="Operation" Tag="deSelectAll" IsEnabled="{Binding ElementName=copy,Path=IsEnabled}" >
                         <MenuItem.Icon >
                             <Image Source="/icons/collapse_all_icon_136745.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
                    
                 </ContextMenu>
-            </RichTextBox.ContextMenu>
-        </RichTextBox>
+            </TextBox.ContextMenu>
+        </TextBox>
     </DockPanel>
 </Window>
