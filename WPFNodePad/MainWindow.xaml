@@ -75,7 +75,15 @@
             <Setter Property="Header" Value="_DeselectAll"/>
             <Setter Property="Command" Value="{Binding DeSelectAll}"/>
         </Style>
-        
+        <x:Array x:Key="editMenu" Type="MenuItem">
+            <MenuItem  Style="{StaticResource undoMenuItem}" />
+            <MenuItem  Style="{StaticResource redoMenuItem}" />
+            <MenuItem  Style="{StaticResource copyMenuItem}"  />
+            <MenuItem  Style="{StaticResource pasteMenuItem}" />
+            <MenuItem  Style="{StaticResource cutMenuItem}"   />
+            <MenuItem  Style="{StaticResource sAllMenuItem}"  />
+            <MenuItem  Style="{StaticResource dSAllMenuItem}" />
+        </x:Array>
     </Window.Resources>
     
     <DockPanel>
@@ -111,19 +119,9 @@
                 
                 <MenuItem Header="_Exit"  Click="Operation" Tag="exit"/>
             </MenuItem>
-            
-            <MenuItem Header="_Edit" >
-                <MenuItem  Style="{StaticResource undoMenuItem}" />
-                <MenuItem  Style="{StaticResource redoMenuItem}" />
-                <Separator/>
-                <MenuItem  Style="{StaticResource copyMenuItem}"  />
-                <MenuItem  Style="{StaticResource pasteMenuItem}" />
-                <MenuItem  Style="{StaticResource cutMenuItem}"   />
-                <Separator/>
-                <MenuItem  Style="{StaticResource sAllMenuItem}"  />
-                <MenuItem  Style="{StaticResource dSAllMenuItem}" />
-            </MenuItem>
-            
+
+            <MenuItem Header="_Edit" ItemsSource="{StaticResource editMenu}"/>
+
             <MenuItem Header="_About.." Command="{Binding About}"/>
         </Menu>
 
@@ -229,18 +227,8 @@
                   Foreground ="{Binding ElementName = fontColor,Path = SelectedItem.Name}"
                   Text="{Binding Text,Mode = TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   Name="userText" Margin="5">
-            <TextBox.ContextMenu>
-                <ContextMenu >
-                    <MenuItem    Style="{StaticResource undoMenuItem}" />
-                    <MenuItem    Style="{StaticResource redoMenuItem}" />
-                    <Separator/>
-                    <MenuItem    Style="{StaticResource copyMenuItem}"   />
-                    <MenuItem    Style="{StaticResource pasteMenuItem}" />
-                    <MenuItem    Style="{StaticResource cutMenuItem}"    />
-                    <Separator/>
-                    <MenuItem    Style="{StaticResource sAllMenuItem}"  />
-                    <MenuItem    Style="{StaticResource dSAllMenuItem}" />
-                </ContextMenu>
+            <TextBox.ContextMenu >
+                <ContextMenu ItemsSource="{StaticResource editMenu}"/>
             </TextBox.ContextMenu>
         </TextBox>
             

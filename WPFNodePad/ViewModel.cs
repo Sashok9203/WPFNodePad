@@ -94,22 +94,22 @@ namespace WPFNodePad
             fontStyle = new((o) => { textBox.FontStyle = textBox.FontStyle == FontStyles.Normal ? FontStyles.Italic : FontStyles.Normal;});
             fontWeight = new((o) => { textBox.FontWeight = textBox.FontWeight == FontWeights.Normal ? FontWeights.Bold : FontWeights.Normal; });
             tDecor = new((o) => { textBox.TextDecorations = textBox.TextDecorations == null ? TextDecorations.Underline : null;});
-            newFile = new((o) =>  nFine() , (o) => (curentPath != null) || (Text != string.Empty));
+            newFile = new((o) =>  nFile() , (o) => (curentPath != null) || (Text != string.Empty));
             about = new((o) => MessageBox.Show("Simple Text Editor", "About program"));
-            openFile = new((o) => LoadDocument());
-            saveFile = new((o) => SaveDocument(), (o) => ! saved);
-            saveFileAs = new((o) => SaveDocument(true));
+            openFile = new((o) => loadDocument());
+            saveFile = new((o) => saveDocument(), (o) => ! saved);
+            saveFileAs = new((o) => saveDocument(true));
         }
 
-        private void nFine()
+        private void nFile()
         {
-            if (!saved && MessageBox.Show("Do you wont save current text?", "Save", MessageBoxButton.YesNo) == MessageBoxResult.Yes) SaveDocument();
+            if (!saved && MessageBox.Show("Do you wont save current text?", "Save", MessageBoxButton.YesNo) == MessageBoxResult.Yes) saveDocument();
             curentPath = null;
             Text = string.Empty;
             saved = true;
         }
 
-        private void SaveDocument(bool newPath = false)
+        private void saveDocument(bool newPath = false)
         {
             string tmpPath = curentPath;
             if (newPath || curentPath == null)
@@ -130,9 +130,9 @@ namespace WPFNodePad
             saved = !newPath;
         }
 
-        private void LoadDocument()
+        private void loadDocument()
         {
-            if (!saved && MessageBox.Show("Do you wont save current text?", "Save", MessageBoxButton.YesNo) == MessageBoxResult.Yes) SaveDocument();
+            if (!saved && MessageBox.Show("Do you wont save current text?", "Save", MessageBoxButton.YesNo) == MessageBoxResult.Yes) saveDocument();
             OpenFileDialog sfd = new()
             {
                 Filter = "Text Files (*.txt)|*.txt"
