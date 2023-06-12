@@ -37,6 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="icons\bold-text_icon-icons.com_71249.png" />
     <Resource Include="icons\collapse_all_icon_136745.png" />
     <Resource Include="icons\copy_paste_document_file_1557.png" />
