@@ -19,6 +19,9 @@
     <None Remove="icons\redoarrow_rehace_1547.png" />
     <None Remove="icons\save_file_disk_open_searsh_loading_clipboard_1513.png" />
     <None Remove="icons\Scissors512_44207.png" />
+    <None Remove="icons\text-align-center_icon-icons.com_48217.png" />
+    <None Remove="icons\text-align-left_icon-icons.com_48215.png" />
+    <None Remove="icons\text-align-right_icon-icons.com_48214.png" />
     <None Remove="icons\texteditor_pencil_detext_836.png" />
     <None Remove="icons\underline-text-button_icon-icons.com_72498.png" />
     <None Remove="icons\undoarrow_undo_1534.png" />
@@ -52,6 +55,9 @@
     <Resource Include="icons\redoarrow_rehace_1547.png" />
     <Resource Include="icons\save_file_disk_open_searsh_loading_clipboard_1513.png" />
     <Resource Include="icons\Scissors512_44207.png" />
+    <Resource Include="icons\text-align-center_icon-icons.com_48217.png" />
+    <Resource Include="icons\text-align-left_icon-icons.com_48215.png" />
+    <Resource Include="icons\text-align-right_icon-icons.com_48214.png" />
     <Resource Include="icons\texteditor_pencil_detext_836.png" />
     <Resource Include="icons\underline-text-button_icon-icons.com_72498.png" />
     <Resource Include="icons\undoarrow_undo_1534.png" />

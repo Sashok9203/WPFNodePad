@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,6 +39,10 @@ namespace WPFNodePad
         private readonly RelayCommand openFile;
         private readonly RelayCommand saveFile;
         private readonly RelayCommand saveFileAs;
+        private readonly RelayCommand aLeft;
+        private readonly RelayCommand aRight;
+        private readonly RelayCommand aCenter;
+        private readonly RelayCommand exit;
 
         public IEnumerable<PropertyInfo> FontColors => typeof(Colors).GetProperties();
         public double[] FontSize => Enumerable.Range(6, 78)
@@ -77,7 +82,10 @@ namespace WPFNodePad
         public ICommand OpenFile => openFile;
         public ICommand SaveFile => saveFile;
         public ICommand SaveFileAs => saveFileAs;
-
+        public ICommand ALeft => aLeft;
+        public ICommand ARight => aRight;
+        public ICommand ACenter => aCenter;
+        public ICommand Exit => exit;
 
         public ViewModel(TextBox tBox)
         {
@@ -99,6 +107,10 @@ namespace WPFNodePad
             openFile = new((o) => loadDocument());
             saveFile = new((o) => saveDocument(), (o) => ! saved);
             saveFileAs = new((o) => saveDocument(true));
+            aLeft = new((o) => textBox.HorizontalContentAlignment = HorizontalAlignment.Left,(o)=> textBox.HorizontalContentAlignment != HorizontalAlignment.Left);
+            aRight = new((o) => textBox.HorizontalContentAlignment = HorizontalAlignment.Right, (o) => textBox.HorizontalContentAlignment != HorizontalAlignment.Right);
+            aCenter = new((o) => textBox.HorizontalContentAlignment = HorizontalAlignment.Center, (o) => textBox.HorizontalContentAlignment != HorizontalAlignment.Center);
+            exit = new((o) => App.Current.Shutdown());
         }
 
         private void nFile()

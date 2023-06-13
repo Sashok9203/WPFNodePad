@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:WPFNodePad"
+        d:DataContext="{d:DesignInstance Type=local:ViewModel}"
         mc:Ignorable="d"
         Title="WPF NodePad" Height="450" Width="800">
     <Window.Resources>
@@ -76,48 +77,61 @@
             <Setter Property="Command" Value="{Binding DeSelectAll}"/>
         </Style>
         <x:Array x:Key="editMenu" Type="MenuItem">
-            <MenuItem  Style="{StaticResource undoMenuItem}" />
-            <MenuItem  Style="{StaticResource redoMenuItem}" />
-            <MenuItem  Style="{StaticResource copyMenuItem}"  />
-            <MenuItem  Style="{StaticResource pasteMenuItem}" />
-            <MenuItem  Style="{StaticResource cutMenuItem}"   />
-            <MenuItem  Style="{StaticResource sAllMenuItem}"  />
-            <MenuItem  Style="{StaticResource dSAllMenuItem}" />
+            <MenuItem  Style="{StaticResource undoMenuItem}" InputGestureText="Ctrl + Z" />
+            <MenuItem  Style="{StaticResource redoMenuItem}" InputGestureText="Ctrl + Y" />
+            <MenuItem  Style="{StaticResource copyMenuItem}" InputGestureText="Ctrl + C" />
+            <MenuItem  Style="{StaticResource pasteMenuItem}" InputGestureText="Ctrl + V"/>
+            <MenuItem  Style="{StaticResource cutMenuItem}"  InputGestureText="Ctrl + X" />
+            <MenuItem  Style="{StaticResource sAllMenuItem}" InputGestureText="Ctrl + A"  />
+            <MenuItem  Style="{StaticResource dSAllMenuItem}" InputGestureText="Ctrl + Shift + D" />
         </x:Array>
     </Window.Resources>
-    
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="C" Command="{Binding Copy}"/>
+        <KeyBinding Modifiers="Ctrl" Key="V" Command="{Binding Paste}"/>
+        <KeyBinding Modifiers="Ctrl" Key="X" Command="{Binding Cut}"/>
+        <KeyBinding Modifiers="Ctrl" Key="N" Command="{Binding NewFile}"/>
+        <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding OpenFile}"/>
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveFile}"/>
+        <KeyBinding Modifiers="Ctrl" Key="Z" Command="{Binding Undo}"/>
+        <KeyBinding Modifiers="Ctrl" Key="Y" Command="{Binding Redo}"/>
+        <KeyBinding Modifiers="Ctrl+Shift" Key="S" Command="{Binding SaveFileAs}"/>
+        <KeyBinding Modifiers="Ctrl" Key="A" Command="{Binding SelectAll}"/>
+        <KeyBinding Modifiers="Ctrl+Shift" Key="D" Command="{Binding DeSelectAll}"/>
+    </Window.InputBindings>
+
     <DockPanel>
 
         <Menu IsMainMenu="True" DockPanel.Dock="Top" Background="LightGray">
             
             <MenuItem Header="_File" >
-                <MenuItem Style="{StaticResource menuButton}" Header="_New" Command="{Binding NewFile}" >
+                <MenuItem Style="{StaticResource menuButton}" InputGestureText="Ctrl + N" Header="_New" Command="{Binding NewFile}" >
                     <MenuItem.Icon >
                         <Image Source="/icons/Newfile_page_document_empty_6315.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Style="{StaticResource menuButton}" Header="_Open" Command="{Binding OpenFile}">
+                <MenuItem Style="{StaticResource menuButton}" Header="_Open" InputGestureText="Ctrl + O" Command="{Binding OpenFile}">
                     <MenuItem.Icon >
                         <Image Source="/icons/open-file256_25211.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Style="{StaticResource menuButton}" Header="_Save" Command="{Binding SaveFile}">
+                <MenuItem Style="{StaticResource menuButton}" Header="_Save" InputGestureText="Ctrl + S" Command="{Binding SaveFile}">
                     <MenuItem.Icon >
                         <Image Source="/icons/save_file_disk_open_searsh_loading_clipboard_1513.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Style="{StaticResource menuButton}" Header="_Save As.."  Command="{Binding SaveFileAs}">
+                <MenuItem Style="{StaticResource menuButton}" Header="_Save As.." InputGestureText="Ctrl + Shift + S" Command="{Binding SaveFileAs}">
                     <MenuItem.Icon >
                         <Image Source="/icons/diskette_save_saveas_1514.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 
                 <Separator/>
-                
-                <MenuItem Header="_Exit"  Click="Operation" Tag="exit"/>
+
+                <MenuItem Header="_Exit"  Command="{Binding Exit}"/>
             </MenuItem>
 
             <MenuItem Header="_Edit" ItemsSource="{StaticResource editMenu}"/>
@@ -209,6 +223,22 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
+            </ToolBar>
+
+            <ToolBar Band="1" BandIndex="1">
+
+                <Button Style="{StaticResource toolButton}" ToolTip="Align Left" Command="{Binding ALeft}">
+                    <Image Source="/icons/text-align-left_icon-icons.com_48215.png" />
+                </Button>
+
+                <Button   Style="{StaticResource toolButton}" ToolTip="Align Center" Command="{Binding  ACenter}">
+                    <Image Source="/icons/text-align-center_icon-icons.com_48217.png"/>
+                </Button>
+
+                <Button  Style="{StaticResource toolButton}" ToolTip="Align Right" Command="{Binding ARight}">
+                    <Image Source="/icons/text-align-right_icon-icons.com_48214.png"/>
+                </Button>
+
             </ToolBar>
         </ToolBarTray>
         
